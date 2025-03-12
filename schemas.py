@@ -22,3 +22,27 @@ class CPUResponse(CPUBase):
 
     class Config:
         orm_mode = True
+
+class SessionBase(BaseModel):
+    status: Optional[str] = "active"
+
+class SessionCreate(SessionBase):
+    pass
+
+class SessionUpdate(BaseModel):
+    end_time: Optional[datetime] = None
+    duration_minutes: Optional[int] = None
+    status: Optional[str] = None
+    amount_paid: Optional[int] = None
+    payment_status: Optional[str] = None
+
+class SessionResponse(SessionBase):
+    id: int
+    start_time: datetime
+    end_time: Optional[datetime]
+    duration_minutes: Optional[int]
+    amount_paid: int
+    payment_status: str
+
+    class Config:
+        orm_mode = True
