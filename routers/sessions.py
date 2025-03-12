@@ -31,7 +31,7 @@ def create_session(
     session_create: SessionCreate,
     db: SQLSession = Depends(get_session)
 ):
-    new_session = Session.from_orm(session_create)
+    new_session = Session(**session_create.dict())
     db.add(new_session)
     db.commit()
     db.refresh(new_session)
@@ -67,6 +67,9 @@ def end_session(id: int, db: SQLSession = Depends(get_session)):
     session = db.get(Session, id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
+    
+    if session.status == "completed":
+        raise HTTPException(status_code=400, detail="Session already ended.")
 
     session.end_time = datetime.utcnow()
     session.duration_minutes = int(

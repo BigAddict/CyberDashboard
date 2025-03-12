@@ -41,8 +41,8 @@ class SessionResponse(SessionBase):
     start_time: datetime
     end_time: Optional[datetime]
     duration_minutes: Optional[int]
-    amount_paid: int
-    payment_status: str
+    amount_paid: Optional[int] = None
+    payment_status: Optional[str] = None
 
     class Config:
         orm_mode = True
